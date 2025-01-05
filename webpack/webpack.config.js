@@ -19,15 +19,17 @@ function getEnvVariables(envVarsPath) {
 
 module.exports = (envs) => {
   const { env } = envs;
+
+  // Load environment variables
+  const commonVarsPath = path.resolve(__dirname, '..', 'env/.env');
+  const envVarsPath = path.resolve(__dirname, '..', `env/.env.${env}`);
+  const commonVars = getEnvVariables(commonVarsPath);
+  const envVars = getEnvVariables(envVarsPath);
+
+  // Load configs
   const envConfig = require(`./webpack.${env}.js`);
   let config = merge(commonConfig, envConfig);
 
-  // Environment variables
-  const commonVarsPath = path.resolve(__dirname, '..', 'env/.env');
-  const envVarsPath = path.resolve(__dirname, '..', `env/.env.${env}`);
-
-  const commonVars = getEnvVariables(commonVarsPath);
-  const envVars = getEnvVariables(envVarsPath);
   config = {
     ...config,
     plugins: [

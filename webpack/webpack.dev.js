@@ -34,7 +34,7 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'mfe-container',
       remotes: {
-        mfeMarketing: 'mfeMarketing@http://localhost:3031/remoteEntry.js',
+        mfeMarketing: `mfeMarketing@${process.env.MFE_MARKETING_DOMAIN}/remoteEntry.js`,
       },
       shared: packageJson.dependencies,
     }),
