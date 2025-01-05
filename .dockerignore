@@ -7,3 +7,4 @@ docker-compose-prod.yml
 .gitignore
 .dockerignore
 .env.dev
+.DS_Store
