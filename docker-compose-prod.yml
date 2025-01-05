@@ -1,0 +1,13 @@
+version: '3'
+services:
+  react-app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      # <outside-world-can-access-to-the-container-at-port>:<container-port>
+      # <container-port> is defined in Dockerfile.prod
+      # As default the production environment port is 80(caused nginx) if you do not initialize it value
+      - '8080:80'
+    env_file:
+      - ./env/.env.prod
