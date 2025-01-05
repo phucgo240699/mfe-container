@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const packageJson = require('../package.json');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
@@ -35,7 +36,7 @@ module.exports = {
       remotes: {
         mfeMarketing: 'mfeMarketing@http://localhost:3031/remoteEntry.js',
       },
-      shared: ['react', 'react-dom', 'react-router'],
+      shared: packageJson.dependencies,
     }),
   ].filter(Boolean),
 };
