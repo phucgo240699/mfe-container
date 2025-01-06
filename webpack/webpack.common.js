@@ -72,8 +72,4 @@ module.exports = {
       template: path.resolve(__dirname, '..', 'public/index.html'),
     }),
   ],
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, '..', 'dist'),
-  },
 };
