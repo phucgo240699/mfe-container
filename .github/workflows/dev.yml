@@ -1,0 +1,39 @@
+name: Development Deployment
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Github action to checkout the code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install Docker
+      run: sudo apt update
+      run: sudo apt install apt-transport-https ca-certificates curl software-properties-common
+      run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      run: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+      run: apt-cache policy docker-ce
+      run: sudo apt install docker-ce
+      run: sudo systemctl status docker
+
+    - name: Execute the Docker Command Without Sudo
+      run: sudo usermod -aG docker ${USER}
+      run: su - ${USER}
+      run: groups
+
+    - name: Install Docker Compose
+      run: sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      run: sudo chmod +x /usr/local/bin/docker-compose
+      
+    - name: Run docker-compose-dev up
+      run: docker-compose -f docker-compose-dev.yml up -d --build
