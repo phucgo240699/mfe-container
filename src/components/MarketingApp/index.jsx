@@ -1,10 +1,16 @@
-import { mount } from 'mfeMarketing/MarketingApp';
 import React, { useRef, useEffect } from 'react';
+
 export default () => {
   const ref = useRef(null);
 
   useEffect(() => {
-    mount(ref.current);
+    import('mfeMarketing/MarketingApp')
+      .then(({ mount }) => {
+        mount(ref.current);
+      })
+      .catch((err) => {
+        console.error('Failed to load MarketingApp', err);
+      });
   }, []);
 
   return <div ref={ref}></div>;

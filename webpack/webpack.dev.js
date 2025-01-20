@@ -33,6 +33,7 @@ module.exports = {
       name: 'mfe-container',
       remotes: {
         mfeMarketing: `mfeMarketing@${process.env.MFE_MARKETING_DOMAIN}/remoteEntry.js`,
+        mfeDashboard: `mfeDashboard@${process.env.MFE_DASHBOARD_DOMAIN}/remoteEntry.js`,
       },
       shared: packageJson.dependencies,
     }),
