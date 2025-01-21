@@ -1,21 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { mount } from 'mfeDashboard/DashboardApp';
+import React, { useRef, useEffect } from 'react';
 
 export default () => {
   const ref = useRef(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    import('mfeDashboard/DashboardApp')
-      .then(({ mount }) => {
-        mount(ref.current);
-      })
-      .catch((err) => {
-        console.error('Failed to load DashboardApp', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    mount(ref.current);
   }, []);
 
-  return <div ref={ref}>{loading ? <div>Loading...</div> : <></>}</div>;
+  return <div ref={ref}></div>;
 };

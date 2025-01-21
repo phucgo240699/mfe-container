@@ -1,3 +1,4 @@
+import { mount } from 'mfeMarketing/MarketingApp';
 import React, { useRef, useEffect, useState } from 'react';
 
 export default () => {
@@ -5,17 +6,8 @@ export default () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    import('mfeMarketing/MarketingApp')
-      .then(({ mount }) => {
-        mount(ref.current);
-      })
-      .catch((err) => {
-        console.error('Failed to load MarketingApp', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    mount(ref.current);
   }, []);
 
-  return <div ref={ref}>{loading ? <div>Loading...</div> : <></>}</div>;
+  return <div ref={ref}></div>;
 };
