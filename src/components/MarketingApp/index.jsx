@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 export default () => {
   const ref = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     import('mfeMarketing/MarketingApp')
@@ -10,8 +11,11 @@ export default () => {
       })
       .catch((err) => {
         console.error('Failed to load MarketingApp', err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
-  return <div ref={ref}></div>;
+  return <div ref={ref}>{loading ? <div>Loading...</div> : <></>}</div>;
 };
