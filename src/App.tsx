@@ -1,7 +1,7 @@
 import './App.css';
 import { Header } from './components/Header';
-import DashboardApp from './components/DashboardApp/index.jsx';
-import MarketingApp from './components/MarketingApp/index.jsx';
+import DashboardApp from './apps/dashboard/index.jsx';
+import MarketingApp from './apps/marketing/index.jsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 
 const App = () => {
