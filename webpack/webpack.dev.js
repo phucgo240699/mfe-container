@@ -3,6 +3,32 @@ const packageJson = require('../package.json');
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
+// Helper function to create remote entry promise
+const createRemoteEntry = (remoteName, remoteUrl) => {
+  return `promise new Promise(resolve => {
+    const script = document.createElement('script');
+    script.src = '${remoteUrl}/remoteEntry.js';
+    script.onload = () => {
+      const proxy = {
+        get: (request) => window['${remoteName}'].get(request),
+        init: (arg) => {
+          try {
+            return window['${remoteName}'].init(arg);
+          } catch(e) {
+            console.log('remote container already initialized');
+          }
+        }
+      };
+      resolve(proxy);
+    };
+    script.onerror = () => {
+      console.error('Failed to load ${remoteName} remote at', '${remoteUrl}/remoteEntry.js');
+      resolve({ get: () => () => null, init: () => null });
+    };
+    document.head.appendChild(script);
+  })`;
+};
+
 module.exports = {
   mode: 'development',
   devtool: 'cheap-module-source-map',
@@ -32,9 +58,18 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'mfe-container',
       remotes: {
-        mfeMarketing: `mfeMarketing@${process.env.MFE_MARKETING_DOMAIN}/remoteEntry.js`,
-        mfeDashboard: `mfeDashboard@${process.env.MFE_DASHBOARD_DOMAIN}/remoteEntry.js`,
-        mfeAuthentication: `mfeAuthentication@${process.env.MFE_AUTHENTICATION_DOMAIN}/remoteEntry.js`,
+        mfeMarketing: createRemoteEntry(
+          'mfeMarketing',
+          process.env.MFE_MARKETING_DOMAIN
+        ),
+        mfeDashboard: createRemoteEntry(
+          'mfeDashboard',
+          process.env.MFE_DASHBOARD_DOMAIN
+        ),
+        mfeAuthentication: createRemoteEntry(
+          'mfeAuthentication',
+          process.env.MFE_AUTHENTICATION_DOMAIN
+        ),
       },
       shared: packageJson.dependencies,
     }),

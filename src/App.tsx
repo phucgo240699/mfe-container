@@ -1,14 +1,14 @@
 import './App.css';
+import React from 'react';
 import { Header } from '@/components/Header';
-import DashboardApp from '@/apps/dashboard/index.jsx';
-import MarketingApp from '@/apps/marketing/index.jsx';
-import AuthenticationApp from '@/apps/authentication/index.jsx';
+import DashboardApp from '@/apps/dashboard';
+import MarketingApp from '@/apps/marketing';
+import AuthenticationApp from '@/apps/authentication';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import {
   AuthenticationContext,
   AuthenticationProvider,
 } from '@/contexts/authentication';
-import React from 'react';
 import { NotFoundPage } from './pages/notFound';
 
 const RoutedApp = () => {
