@@ -9,6 +9,7 @@ import {
   AuthenticationProvider,
 } from '@/contexts/authentication';
 import React from 'react';
+import { NotFoundPage } from './pages/notFound';
 
 const RoutedApp = () => {
   const { isAuthenticated } = React.useContext(AuthenticationContext);
@@ -44,6 +45,7 @@ const RoutedApp = () => {
             isAuthenticated ? <Navigate to={'/'} /> : <AuthenticationApp />
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
