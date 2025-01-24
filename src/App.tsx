@@ -2,19 +2,60 @@ import './App.css';
 import { Header } from '@/components/Header';
 import DashboardApp from '@/apps/dashboard/index.jsx';
 import MarketingApp from '@/apps/marketing/index.jsx';
+import AuthenticationApp from '@/apps/authentication/index.jsx';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import {
+  AuthenticationContext,
+  AuthenticationProvider,
+} from '@/contexts/authentication';
+import React from 'react';
+
+const RoutedApp = () => {
+  const { isAuthenticated } = React.useContext(AuthenticationContext);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to={'/dashboard'} />
+            ) : (
+              <Navigate to={'/auth'} />
+            )
+          }
+        />
+        <Route
+          path="/dashboard/*"
+          element={
+            isAuthenticated ? <DashboardApp /> : <Navigate to={'/auth'} />
+          }
+        />
+        <Route
+          path="/marketing/*"
+          element={
+            isAuthenticated ? <MarketingApp /> : <Navigate to={'/auth'} />
+          }
+        />
+        <Route
+          path="/auth/*"
+          element={
+            isAuthenticated ? <Navigate to={'/'} /> : <AuthenticationApp />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <AuthenticationProvider>
       <Header>
-        <Routes>
-          <Route path="/" element={<Navigate to={'/dashboard'} />} />
-          <Route path="/dashboard/*" element={<DashboardApp />} />
-          <Route path="/marketing/*" element={<MarketingApp />} />
-        </Routes>
+        <RoutedApp />
       </Header>
-    </BrowserRouter>
+    </AuthenticationProvider>
   );
 };
 

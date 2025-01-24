@@ -1,3 +1,4 @@
+import { AuthenticationContext } from '@/contexts/authentication';
 import * as React from 'react';
 
 interface HeaderProps {
@@ -5,15 +6,28 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ children = <></> }) => {
+  const { isAuthenticated, reset } = React.useContext(AuthenticationContext);
+
+  const handleLogout = (): void => {
+    reset();
+  };
+
   return (
     <>
-      <div className="fixed w-full px-6 py-3 bg-white flex justify-between items-center border-b-2 border-b-neutral-300 shadow-md">
-        <a href={'/dashboard'}>Dashboard</a>
-        <a href={'/marketing'}>Marketing</a>
-        <button className="border-[1px] px-6 py-2 rounded-lg text-neutral-700 border-neutral-700 hover:text-blue-700 hover:border-blue-700 ">
-          Login
-        </button>
-      </div>
+      {isAuthenticated ? (
+        <div className="fixed w-full px-6 py-3 bg-white flex justify-between items-center border-b-2 border-b-neutral-300 shadow-md">
+          <a href={'/'}>Dashboard</a>
+          <a href={'/marketing'}>Marketing</a>
+          <button
+            onClick={handleLogout}
+            className="border-[1px] px-6 py-2 rounded-lg text-red-700 border-red-700 hover:text-red-500 hover:border-red-500 "
+          >
+            Logout
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
       <br />
       <br />
       <br />
