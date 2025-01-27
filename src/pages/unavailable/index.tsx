@@ -1,9 +1,11 @@
-export const NotFoundPage = () => (
+export default () => (
   <div className="bg-gray-100 flex items-center justify-center h-screen">
     <div className="text-center">
-      <h1 className="text-6xl font-bold text-gray-800 mb-4">Not found</h1>
+      <h1 className="text-6xl font-bold text-gray-800 mb-4">
+        Service unavailable
+      </h1>
       <p className="text-2xl text-gray-600 mb-8">
-        Oops! The page you're looking for doesn't exist.
+        Oops! The page you're looking for is currently unavailable.
       </p>
       <a
         href="/"
