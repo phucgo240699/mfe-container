@@ -1,5 +1,6 @@
 import { AuthenticationContext } from '@/contexts/authentication';
 import * as React from 'react';
+import { Link } from 'react-router';
 
 interface HeaderProps {
   children?: React.ReactNode;
@@ -16,8 +17,8 @@ export const Header: React.FC<HeaderProps> = ({ children = <></> }) => {
     <>
       {isAuthenticated ? (
         <div className="fixed w-full px-6 py-3 bg-white flex justify-between items-center border-b-2 border-b-neutral-300 shadow-md">
-          <a href={'/'}>Dashboard</a>
-          <a href={'/marketing'}>Marketing</a>
+          <Link to={'/'}>Dashboard</Link>
+          <Link to={'/marketing'}>Marketing</Link>
           <button
             onClick={handleLogout}
             className="border-[1px] px-6 py-2 rounded-lg text-red-700 border-red-700 hover:text-red-500 hover:border-red-500 "

@@ -30,13 +30,25 @@ const RoutedApp = () => {
         <Route
           path="/dashboard/*"
           element={
-            isAuthenticated ? <DashboardApp /> : <Navigate to={'/auth'} />
+            isAuthenticated ? (
+              <Header>
+                <DashboardApp />
+              </Header>
+            ) : (
+              <Navigate to={'/auth'} />
+            )
           }
         />
         <Route
           path="/marketing/*"
           element={
-            isAuthenticated ? <MarketingApp /> : <Navigate to={'/auth'} />
+            isAuthenticated ? (
+              <Header>
+                <MarketingApp />
+              </Header>
+            ) : (
+              <Navigate to={'/auth'} />
+            )
           }
         />
         <Route
@@ -54,9 +66,7 @@ const RoutedApp = () => {
 const App = () => {
   return (
     <AuthenticationProvider>
-      <Header>
-        <RoutedApp />
-      </Header>
+      <RoutedApp />
     </AuthenticationProvider>
   );
 };
