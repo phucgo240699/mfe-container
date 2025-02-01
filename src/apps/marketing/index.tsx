@@ -1,8 +1,8 @@
 import App from './component.jsx';
-import ErrorBoundary from '@/components/ErrorBoundary/index.jsx';
+import UnavailableBoundary from '@/errorBoundaries/unavailable/index.jsx';
 
 export default () => (
-  <ErrorBoundary>
+  <UnavailableBoundary>
     <App />
-  </ErrorBoundary>
+  </UnavailableBoundary>
 );

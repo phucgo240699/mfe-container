@@ -1,7 +1,7 @@
 import React from 'react';
 import UnavailablePage from '@/pages/unavailable';
 
-class ErrorBoundary extends React.Component {
+class UnavailableBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
@@ -22,4 +22,4 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default ErrorBoundary;
+export default UnavailableBoundary;
