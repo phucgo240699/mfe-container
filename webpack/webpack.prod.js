@@ -16,6 +16,32 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 // Import the package.json file to access project dependencies
 const packageJson = require('../package.json');
 
+// Helper function to create remote entry promise
+const createRemoteEntry = (remoteName, remoteUrl) => {
+  return `promise new Promise(resolve => {
+    const script = document.createElement('script');
+    script.src = '${remoteUrl}/remoteEntry.js';
+    script.onload = () => {
+      const proxy = {
+        get: (request) => window['${remoteName}'].get(request),
+        init: (arg) => {
+          try {
+            return window['${remoteName}'].init(arg);
+          } catch(e) {
+            console.log('remote container already initialized');
+          }
+        }
+      };
+      resolve(proxy);
+    };
+    script.onerror = () => {
+      console.error('Failed to load ${remoteName} remote at', '${remoteUrl}/remoteEntry.js');
+      resolve({ get: () => () => null, init: () => null });
+    };
+    document.head.appendChild(script);
+  })`;
+};
+
 module.exports = {
   // Set the mode to production
   mode: 'production',
@@ -37,7 +63,18 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'mfe-container', // Name of the container
       remotes: {
-        mfeMarketing: `mfeMarketing@http://localhost:8081/remoteEntry.js`, // Remote entry for mfeMarketing
+        mfeMarketing: createRemoteEntry(
+          'mfeMarketing',
+          process.env.MFE_MARKETING_DOMAIN
+        ),
+        mfeDashboard: createRemoteEntry(
+          'mfeDashboard',
+          process.env.MFE_DASHBOARD_DOMAIN
+        ),
+        mfeAuthentication: createRemoteEntry(
+          'mfeAuthentication',
+          process.env.MFE_AUTHENTICATION_DOMAIN
+        ),
       },
       shared: packageJson.dependencies, // Share dependencies from package.json
     }),
@@ -45,6 +82,8 @@ module.exports = {
 
   // Configure the output settings
   output: {
+    publicPath: '/', // Base URL for all assets
+    clean: true, // Clean the output directory before emitting files
     filename: 'main.js', // Output file name
     path: path.resolve(__dirname, '..', 'dist'), // Output directory
   },
